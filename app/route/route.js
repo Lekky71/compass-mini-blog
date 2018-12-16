@@ -5,18 +5,18 @@
 const config = require('../config/settings');
 
 const routes = function routes(server, serviceLocator) {
-    const triangle = serviceLocator.get('triangleController');
-    server.get({
-        path: '/',
-        name: 'home',
-        version: '1.0.0'
-    }, (req, res) => res.send(`Welcome to ${config.appName} API`));
+  const triangle = serviceLocator.get('triangleController');
+  server.get({
+    path: '/',
+    name: 'home',
+    version: '1.0.0'
+  }, (req, res) => res.send(`Welcome to ${config.appName} API`));
 
-    server.get({
-       path: '/triangle',
-       name: 'Triangle type check',
-       version: '1.0.0'
-    }, (req, res) => triangle.receiveTriangle(req, res));
+  server.get({
+    path: '/triangle',
+    name: 'Triangle type check',
+    version: '1.0.0'
+  }, (req, res) => triangle.receiveTriangle(req, res));
 };
 
 module.exports = routes;

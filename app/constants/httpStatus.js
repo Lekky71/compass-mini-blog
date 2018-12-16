@@ -1,7 +1,8 @@
 /**
  * Created by Oluwaleke Fakorede on 15/12/2018.
  */
-class HTTPStatus {}
+class HTTPStatus {
+}
 
 Object.defineProperty(HTTPStatus, 'OK', {
   value: 200,

@@ -15,14 +15,14 @@ function ServiceLocator() {
 }
 
 /**
-       * Adds a dependency to the container.
-       *
-       * @method register
-       * @param  {String}   dependencyName The dependency name
-       * @param  {Function} constructor    The function used for,
-       *  initially instantiating the dependency.
-       * @return {void}
-       */
+ * Adds a dependency to the container.
+ *
+ * @method register
+ * @param  {String}   dependencyName The dependency name
+ * @param  {Function} constructor    The function used for,
+ *  initially instantiating the dependency.
+ * @return {void}
+ */
 ServiceLocator.prototype.register = function register(dependencyName, constructor) {
   if (typeof constructor !== 'function') {
     throw new Error(`${dependencyName}: Dependency constructor is not a function`);
@@ -36,12 +36,12 @@ ServiceLocator.prototype.register = function register(dependencyName, constructo
 };
 
 /**
-       * Resolves and returns the dependency requested.
-       *
-       * @method get
-       * @param  {string} dependencyName The name of the dependency to resolve.
-       * @return {mixed}                 The resolved dependency
-       */
+ * Resolves and returns the dependency requested.
+ *
+ * @method get
+ * @param  {string} dependencyName The name of the dependency to resolve.
+ * @return {mixed}                 The resolved dependency
+ */
 ServiceLocator.prototype.get = function get(dependencyName) {
   if (this.dependencyMap[dependencyName] === undefined) {
     throw new Error(`${dependencyName}: Attempting to retrieve unknown dependency`);
@@ -63,13 +63,13 @@ ServiceLocator.prototype.get = function get(dependencyName) {
 };
 
 /**
-       * Retrieves an object containing the dependency name as the key and the resolved dependency
-       * as the object. This object contains all dependencies registered in this container.
-       *
-       * @method getAll
-       * @return {Array} Contain all the dependencies registered
-       * in this container after being resolved.
-       */
+ * Retrieves an object containing the dependency name as the key and the resolved dependency
+ * as the object. This object contains all dependencies registered in this container.
+ *
+ * @method getAll
+ * @return {Array} Contain all the dependencies registered
+ * in this container after being resolved.
+ */
 ServiceLocator.prototype.getAll = function getAll() {
   const dependencies = Object.keys(this.dependencyMap);
   dependencies.forEach((key) => {
@@ -80,10 +80,10 @@ ServiceLocator.prototype.getAll = function getAll() {
 };
 
 /**
-       * Clears all the dependencies from this container and from the cache.
-       * @method clear
-       * @return {void}
-       */
+ * Clears all the dependencies from this container and from the cache.
+ * @method clear
+ * @return {void}
+ */
 ServiceLocator.prototype.clear = function clear() {
   this.dependencyCache = {};
   this.dependencyMap = {};

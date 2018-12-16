@@ -2,7 +2,6 @@
  * Created by Oluwaleke Fakorede on 15/12/2018.
  */
 
-
 function respond(res, data, httpCode) {
   const response = {
     error: data.error,
@@ -14,7 +13,6 @@ function respond(res, data, httpCode) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Method', '*');
-
 
   res.writeHead(httpCode);
   res.end(JSON.stringify(response));
