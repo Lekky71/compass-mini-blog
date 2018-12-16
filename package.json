@@ -4,7 +4,7 @@
   "description": "A REST API that can be used to check the type of a triangle based on the size of it sides.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./app/tests/*.js --reporter spec --timeout 5000",
+    "test": "mocha ./app/tests/*.js --timeout 5000",
     "api": "node app/index.js"
   },
   "author": "Oluwaleke Fakorede",

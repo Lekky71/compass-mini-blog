@@ -49,28 +49,24 @@ class PostgresqlHelper {
   }
 
   search(params){
-    return new Promise((resolve, reject) => {
-      this.pgClient.query(this.searchQuery, params.fields, (err, results) => {
-        if(err) reject(err);
-        resolve(results.rows);
+    return this.pgClient.query(this.searchQuery, params.fields)
+      .then(results => {
+        return results.rows;
       });
-    });
   }
 
   update(params){
-    return new Promise((resolve, reject) => {
-      this.pgClient.query(this.updateQuery, params.fields, (err, results) => {
-        if(err) reject(err);
-        resolve(results.rows);
+    return this.pgClient.query(this.updateQuery, params.fields)
+      .then(results => {
+        return results.rowCount;
       });
-    });
   }
 
   deleteById(params){
     return new Promise((resolve, reject) => {
       this.pgClient.query(this.deleteByIdQuery, params.fields, (err, results) => {
         if(err) reject(err);
-        resolve(results.rows);
+        resolve(results.rowCount);
       });
     });
   }

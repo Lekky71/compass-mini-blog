@@ -41,16 +41,47 @@ class BlogPostService {
       });
   }
 
-  searchForBlogPost(req, res ){
+  searchForBlogPost(queryString){
+    const params = {fields:[`%${queryString}%`]};
+    return this.postgresqlHelper
+      .search(params)
+      .then(rows => {
+        this.logger.info(`Successfully retrieved all blog posts searched for.`);
+        return rows;
+      });
+  }
+
+  updateBlogPost(postId, body){
+    const {category, title, content} = body;
+    const param = {fields:[postId]};
+    return this.postgresqlHelper.getById(param)
+      .then(rows => {
+        this.logger.info(`Retrieved row to update is: ${rows[0]}`);
+        const blogPost = rows[0];
+        if(blogPost) {
+          let catg = category ? category : blogPost.category;
+          let titl = title ? title: blogPost.title;
+          let con = content ? content : blogPost.content;
+          const params = {fields:[postId, catg, titl, con, blogPost['creator_name'], blogPost['comment_count'], blogPost['created_at']]};
+          return this.postgresqlHelper
+            .update(params)
+            .then(rowCount => {
+              this.logger.info(`Successfully updated blog post with id ${postId}`);
+              return rowCount > 0 ? {status:'success'} : {status:'failure'};
+            });
+        }
+      });
 
   }
 
-  updateBlogPost(req, res ){
-
-  }
-
-  deleteBlogPost(req, res ){
-
+  deleteBlogPost(postId){
+    const param = {fields:[postId]};
+    return this.postgresqlHelper
+      .deleteById(param)
+      .then(rowCount => {
+        this.logger.info(`Successfully deleted blog post with id ${postId}`);
+        return rowCount > 0 ? {status:'success'} : {status:'failure'};
+      });
   }
 
 }
