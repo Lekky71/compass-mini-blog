@@ -1,48 +1,56 @@
-const userReturn = 'user_id, username, email, first_name, last_name, created_at';
-const questionReturn = 'question_id, category, title, content, preferred_answer_id, user_id, answer_count, created_at';
-const commentReturn = 'comment_id, answer_id, content, poster_user_id, created_at';
-const answerReturn = 'answer_id, question_id, content, answerer_user_id, up_votes, down_votes, created_at';
-//TODO Change to appropriate table and column names
+/**
+ * Query String constants for CRUD operations for posts and comments tables
+ * @type {string}
+ */
+
+const postColumns = 'post_id, category, title, content, creator_name, comment_count, created_at';
+const commentColumns = 'comment_id, post_id, content, creator_name, created_at';
+const postTable = 'posts';
+const commentTable = 'comments';
+
 module.exports = {
-  create_question_table: `CREATE TABLE IF NOT EXISTS questions (question_id TEXT PRIMARY KEY NOT NULL,
+  postColumns,
+  commentColumns,
+  postTable,
+  commentTable,
+  create_posts_table: `CREATE TABLE IF NOT EXISTS ${postTable} (post_id TEXT PRIMARY KEY NOT NULL,
                          category TEXT,
                          title TEXT,
                          content TEXT,
-                         preferred_answer_id TEXT,
-                         user_id TEXT REFERENCES users(user_id),
-                         answer_count INTEGER,
+                         creator_name TEXT,
+                         comment_count INTEGER,
                          created_at TIMESTAMP );`,
-  create_answers_table: `CREATE TABLE IF NOT EXISTS answers (answer_id TEXT PRIMARY KEY NOT NULL,
-                         question_id TEXT REFERENCES questions(question_id) ON DELETE CASCADE,
+  create_comments_table: `CREATE TABLE IF NOT EXISTS ${commentTable} (comment_id TEXT PRIMARY KEY NOT NULL,
+                         post_id TEXT REFERENCES ${postTable}(post_id) ON DELETE CASCADE,
                          content TEXT,
-                         answerer_user_id TEXT REFERENCES users(user_id) ON DELETE RESTRICT,
-                         up_votes INTEGER,
-                         down_votes INTEGER, 
+                         creator_name TEXT,
                          created_at TIMESTAMP );`,
-  create_comments_table: `CREATE TABLE IF NOT EXISTS comments (comment_id TEXT PRIMARY KEY NOT NULL,
-                          answer_id TEXT REFERENCES answers(answer_id) ON DELETE CASCADE,
-                          content TEXT,
-                          poster_user_id TEXT REFERENCES users(user_id) ON DELETE RESTRICT,
-                          created_at TIMESTAMP );`,
 
-  add_question: `INSERT INTO questions (question_id, category, title, content, user_id, answer_count, created_at) 
-                 VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING ${questionReturn}`,
-  get_all_questions: `SELECT ${questionReturn} FROM questions ORDER BY created_at DESC;`,
-  get_question_by_id: `SELECT ${questionReturn} FROM questions WHERE question_id = $1 ;`,
-  delete_question_by_id: `DELETE FROM questions
-                          WHERE question_id = $1;`,
-  add_answer: `INSERT INTO answers (answer_id, question_id, content, answerer_user_id, up_votes, down_votes, created_at)
-               VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING ${answerReturn}`,
-
-  get_all_user_questions: `SELECT ${questionReturn} FROM questions WHERE user_id = $1 ORDER BY created_at DESC;`,
-  search_for_question: `SELECT ${questionReturn}
-                        FROM questions
-                        WHERE title LIKE '%$1%' OR content LIKE $1 
+  add_post: `INSERT INTO ${postTable} (${postColumns}) 
+                 VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING ${postColumns}`,
+  get_all_posts: `SELECT ${postColumns} FROM ${postTable} ORDER BY created_at DESC;`,
+  get_post_by_id: `SELECT ${postColumns} FROM ${postTable} WHERE post_id = $1 ;`,
+  search_for_posts: `SELECT ${postColumns}
+                        FROM ${postTable}
+                        WHERE title LIKE $1 OR content LIKE $1 OR creator_name LIKE $1
                         ORDER BY created_at DESC;`,
-  add_comment: `INSERT INTO comments(comment_id, answer_id, content, poster_user_id, created_at)
-                VALUES($1, $2, $3, $4, $5) RETURNING ${commentReturn}`,
-  get_answers_for_question: `SELECT ${answerReturn}
-                             FROM answers
-                             WHERE question_id = $1
+  update_post_by_id: `UPDATE ${postTable}
+                        SET category = $2, title = $3, content = $4, creator_name = $5, comment_count = $6, created_at = $7
+                        WHERE post_id = $1`,
+  delete_post_by_id: `DELETE FROM ${postTable}
+                          WHERE post_id = $1;`,
+
+  add_comment: `INSERT INTO ${commentTable} (${commentColumns})
+               VALUES ($1, $2, $3, $4, $5) RETURNING ${commentColumns}`,
+  get_comment_by_id: `SELECT ${commentColumns} FROM ${commentTable} WHERE comment_id = $1 ;`,
+  get_comments_for_post: `SELECT ${commentColumns}
+                             FROM ${commentTable}
+                             WHERE comment_id = $1
                              ORDER BY created_at ASC`,
+  update_comment_by_id: `UPDATE ${commentTable}
+                        SET content = $2
+                        WHERE comment_id = $1`,
+  delete_comment_by_id: `DELETE FROM ${commentTable}
+                          WHERE comment_id = $1;`,
+
 };

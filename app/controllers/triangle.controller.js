@@ -23,7 +23,7 @@ class TriangleController {
     this.triangleService.checkTriangle(Number(a), Number(b), Number(c))
       .then(response => {
         this.logger.info(response);
-        Response.success(res, {
+        return Response.success(res, {
           message: 'Triangle Check complete:',
           response
         }, HttpStatus.OK);
