@@ -33,3 +33,5 @@ routes(server, serviceLocator);
 server.listen(config.port, () => {
     logger.info(`${server.name} is listening at ${server.url}`);
 });
+
+module.exports = server;

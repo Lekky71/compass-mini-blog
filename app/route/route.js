@@ -10,10 +10,10 @@ const routes = function routes(server, serviceLocator) {
         path: '/',
         name: 'home',
         version: '1.0.0'
-    }, (req, res) => res.send('Welcome to this API'));
+    }, (req, res) => res.send(`Welcome to ${config.appName} API`));
 
-    server.post({
-       path: '/triangle/check',
+    server.get({
+       path: '/triangle',
        name: 'Triangle type check',
        version: '1.0.0'
     }, (req, res) => triangle.receiveTriangle(req, res));

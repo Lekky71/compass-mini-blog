@@ -11,8 +11,8 @@ class TriangleController {
     }
 
     receiveTriangle(req, res){
-        const {a, b, c} = req.params;
-        this.logger.info(`Triangle Request: ${JSON.stringify(req.params)}`);
+        const {a, b, c} = req.query;
+        this.logger.info(`Triangle Request: ${JSON.stringify(req.query)}`);
         if(isNaN(a)){
             return Response.failure(res, {message: 'Param a (number type) is required'}, HttpStatus.BAD_REQUEST);
         }
@@ -22,7 +22,7 @@ class TriangleController {
         else if(isNaN(c)){
             return Response.failure(res, {message: 'Param c (number type) is required'}, HttpStatus.BAD_REQUEST);
         }
-        this.triangleService.checkTriangle(a,b,c)
+        this.triangleService.checkTriangle(Number(a),Number(b),Number(c))
             .then(response => {
                 this.logger.info(response);
                 Response.success(res, {message: 'Triangle Check complete:', response}, HttpStatus.OK);

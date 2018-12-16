@@ -35,31 +35,31 @@ serviceLocator.register('logger', () => {
  */
 
 
-serviceLocator.register('mysql', () => {
-  const logger = serviceLocator.get('logger');
-  const connection = new mysql.createConnection({
-    host: config.mySql.host,
-    user: config.mySql.user,
-    password: config.mySql.password
-  });
-  connection.connect((error) => {
-    if (error) {
-      logger.error('mysql could not connect!');
-    } else {
-      logger.info('mysql connected');
-        const dbQuery = `CREATE DATABASE ${config.mySql.database}`;
-        connection.query(dbQuery, (err, result) => {
-            if (err) {
-                logger.error('database may exist already')
-            }
-            if(result){
-                logger.info(`Database ${config.mySql.database} created successfully`);
-            }
-        })
-    }
-  });
-  return connection;
-});
+// serviceLocator.register('mysql', () => {
+//   const logger = serviceLocator.get('logger');
+//   const connection = new mysql.createConnection({
+//     host: config.mySql.host,
+//     user: config.mySql.user,
+//     password: config.mySql.password
+//   });
+//   connection.connect((error) => {
+//     if (error) {
+//       logger.error('mysql could not connect!');
+//     } else {
+//       logger.info('mysql connected');
+//         const dbQuery = `CREATE DATABASE ${config.mySql.database}`;
+//         connection.query(dbQuery, (err, result) => {
+//             if (err) {
+//                 logger.error('database may exist already')
+//             }
+//             if(result){
+//                 logger.info(`Database ${config.mySql.database} created successfully`);
+//             }
+//         })
+//     }
+//   });
+//   return connection;
+// });
 
 // SERVICE INSTANCES
 
