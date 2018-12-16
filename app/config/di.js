@@ -2,7 +2,8 @@
  * Created by Oluwaleke Fakorede on 15/12/2018.
  */
 const winston = require('winston');
-const mysql = require('mysql');
+const pg = require('pg');
+const {Pool} = pg;
 
 const config = require('../config/settings');
 const serviceLocator = require('../lib/serviceLocator');
@@ -35,16 +36,15 @@ serviceLocator.register('logger', () => {
  */
 
 
-// serviceLocator.register('mysql', () => {
+// serviceLocator.register('pg', () => {
 //   const logger = serviceLocator.get('logger');
-//   const connection = new mysql.createConnection({
-//     host: config.mySql.host,
-//     user: config.mySql.user,
-//     password: config.mySql.password
+//   const client = new Pool({
+//     connectionString: config.postgresql.connectionString,
+//     ssl: true,
 //   });
-//   connection.connect((error) => {
+//   client.connect((error) => {
 //     if (error) {
-//       logger.error('mysql could not connect!');
+//       logger.error(`could not connect to database : ${JSON.stringify(error)}`);
 //     } else {
 //       logger.info('mysql connected');
 //         const dbQuery = `CREATE DATABASE ${config.mySql.database}`;
