@@ -305,28 +305,6 @@ describe('Blog Post Test Suite', () => {
       });
   });
 
-  it('should fail to get all comments for a post because postId is not specified', (done) => {
-    chai.request(app)
-      .get(`${commentUrl}/post`)
-      .set('content-type', 'application/x-www-form-urlencoded')
-      .send({
-        postId
-      })
-      .end((err, res) => {
-        if (err) {
-          console.log(err);
-        }
-        expect(res.body.code)
-          .to
-          .have
-          .equal(400);
-        expect(res.body)
-          .to
-          .have.property('message');
-        done();
-      });
-  });
-
   it('should update a comment using its id', (done) => {
     chai.request(app)
       .put(`${commentUrl}/${commentId}`)

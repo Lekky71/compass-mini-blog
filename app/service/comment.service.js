@@ -47,11 +47,11 @@ class CommentService {
     const param = {fields:[commentId]};
     return this.postgresqlHelper.getById(param)
       .then(rows => {
-        this.logger.info(`Retrieved row to update is: ${rows[0]}`);
+        this.logger.info(`Retrieved comment row to update`);
         const comment = rows[0];
         if(comment) {
           let con = content ? content : comment.content;
-          const params = {fields:[commentId, comment['post_id'], con, comment['creator_name'], comment['created_at']]};
+          const params = {fields:[commentId, con]};
           return this.postgresqlHelper
             .update(params)
             .then(rowCount => {

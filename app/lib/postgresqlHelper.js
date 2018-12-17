@@ -49,7 +49,7 @@ class PostgresqlHelper {
   }
 
   getForId(params){
-    return this.pgClient.query(this.getAllQuery, params)
+    return this.pgClient.query(this.getAllQuery, params.fields)
       .then(results => {
         return results.rows;
       });

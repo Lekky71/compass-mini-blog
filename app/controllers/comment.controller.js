@@ -59,9 +59,17 @@ class CommentController {
 
   }
   getAllCommentsForPost(req, res){
-    const {postId} = req.params;
-    if(!postId){
-      return Response.failure(res, { message: ['enter postId'] }, HttpStatus.BAD_REQUEST);
+    const { postId } = req.params;
+    const messages = [];
+    this.logger.error(`Request postId is::${JSON.stringify(req.params)}`);
+    if(!postId) {
+      messages.push('enter post id param');
+    }
+    if((!req.params) || (req.params === {})){
+      messages.push('enter at least one parameter to update');
+    }
+    if(messages.length > 0){
+      return Response.failure(res, { message: messages}, HttpStatus.BAD_REQUEST);
     }
     return this.commentService.getAllCommentsForPost(postId)
       .then(response => {
@@ -80,7 +88,7 @@ class CommentController {
   updateComment(req, res){
     const { commentId } = req.params;
     const messages = [];
-    if(!commentId) {
+    if(!commentId || commentId.length < 5) {
       messages.push('enter post id param');
     }
     if((!req.body) || (req.body === {})){

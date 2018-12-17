@@ -45,7 +45,7 @@ module.exports = {
   get_comment_by_id: `SELECT ${commentColumns} FROM ${commentTable} WHERE comment_id = $1 ;`,
   get_comments_for_post: `SELECT ${commentColumns}
                              FROM ${commentTable}
-                             WHERE comment_id = $1
+                             WHERE post_id = $1
                              ORDER BY created_at ASC`,
   update_comment_by_id: `UPDATE ${commentTable}
                         SET content = $2
