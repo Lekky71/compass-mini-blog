@@ -4,7 +4,7 @@
   "description": "A REST API that can be used to check the type of a triangle based on the size of it sides.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha ./app/tests/*.js --timeout 5000",
     "api": "node app/index.js"
   },
   "author": "Oluwaleke Fakorede",
@@ -12,16 +12,21 @@
   "dependencies": {
     "bluebird": "3.5.2",
     "dotenv": "6.1.0",
-    "mysql": "2.16.0",
+    "pg": "^7.4.3",
     "restify": "7.2.1",
     "restify-plugins": "^1.6.0",
-    "winston": "3.1.0"
+    "winston": "3.1.0",
+    "uuid": "latest"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-http": "^4.2.0",
     "eslint": "^5.7.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-react": "^7.11.1"
+    "eslint-plugin-react": "^7.11.1",
+    "mocha": "^3.5.3"
   }
 }
