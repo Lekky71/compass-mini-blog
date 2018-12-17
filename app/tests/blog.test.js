@@ -213,7 +213,7 @@ describe('Blog Post Test Suite', () => {
         postId,
         content:'Keep your core set, posture low and weight on the balls of your feet.Change direction by driving' +
           ' with your legs and pushing into a full forward sprint toward Cone ',
-        creatorName:'Oluwaleke Fakorede'
+        creatorName:'Oluwaleke'
       })
       .end((err, res) => {
         if (err) {
