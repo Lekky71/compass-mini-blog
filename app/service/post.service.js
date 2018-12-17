@@ -5,6 +5,7 @@ class BlogPostService {
     this.logger = logger;
     this.pgClient = pgClient;
     this.postgresqlHelper = new PostgresqlHelper(pgClient, 'posts');
+    this.commentsPostgresqlHelper = new PostgresqlHelper(pgClient, 'comments');
 
   }
 
@@ -26,9 +27,15 @@ class BlogPostService {
     const params = {fields:[postId]};
     return this.postgresqlHelper
       .getById(params)
-      .then(rows => {
+      .then(post => {
         this.logger.info(`Successfully retrieved blog post`);
-        return rows;
+        const param = {fields:[postId]};
+        return this.commentsPostgresqlHelper
+          .getForId(param)
+          .then(rows => {
+            post.comments = rows;
+            return post;
+          });
       });
   }
 

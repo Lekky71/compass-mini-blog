@@ -37,7 +37,7 @@ class PostgresqlHelper {
   getById(params){
     return this.pgClient.query(this.getByIdQuery, params.fields)
       .then(results => {
-        return results.rows;
+        return results.rows[0];
       });
   }
 
