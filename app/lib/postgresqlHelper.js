@@ -8,9 +8,9 @@ class PostgresqlHelper {
   /*
     @param pgClient is an instance of a pg connected client
    */
-  constructor(pgClient, column){
+  constructor(pgClient, column) {
     this.pgClient = pgClient;
-    if(column === pgQuery.postTable){
+    if (column === pgQuery.postTable) {
       this.addQuery = pgQuery.add_post;
       this.getByIdQuery = pgQuery.get_post_by_id;
       this.getAllQuery = pgQuery.get_all_posts;
@@ -18,7 +18,7 @@ class PostgresqlHelper {
       this.updateQuery = pgQuery.update_post_by_id;
       this.deleteByIdQuery = pgQuery.delete_post_by_id;
     }
-    else if(column === pgQuery.commentTable){
+    else if (column === pgQuery.commentTable) {
       this.addQuery = pgQuery.add_comment;
       this.getByIdQuery = pgQuery.get_comment_by_id;
       this.getAllQuery = pgQuery.get_comments_for_post;
@@ -27,28 +27,28 @@ class PostgresqlHelper {
     }
   }
 
-  add(params){
+  add(params) {
     return this.pgClient.query(this.addQuery, params.fields)
       .then(results => {
         return results.rows;
       });
   }
 
-  getById(params){
+  getById(params) {
     return this.pgClient.query(this.getByIdQuery, params.fields)
       .then(results => {
         return results.rows[0];
       });
   }
 
-  getAll(){
+  getAll() {
     return this.pgClient.query(this.getAllQuery)
       .then(results => {
         return results.rows;
       });
   }
 
-  getForId(params){
+  getForId(params) {
     return this.pgClient.query(this.getAllQuery, params.fields)
       .then(results => {
         return results.rows;
@@ -56,24 +56,24 @@ class PostgresqlHelper {
   }
 
 
-  search(params){
+  search(params) {
     return this.pgClient.query(this.searchQuery, params.fields)
       .then(results => {
         return results.rows;
       });
   }
 
-  update(params){
+  update(params) {
     return this.pgClient.query(this.updateQuery, params.fields)
       .then(results => {
         return results.rowCount;
       });
   }
 
-  deleteById(params){
+  deleteById(params) {
     return new Promise((resolve, reject) => {
       this.pgClient.query(this.deleteByIdQuery, params.fields, (err, results) => {
-        if(err) reject(err);
+        if (err) reject(err);
         resolve(results.rowCount);
       });
     });
