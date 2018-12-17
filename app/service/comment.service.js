@@ -16,7 +16,6 @@ class CommentService {
     return this.postgresqlHelper
       .add(params)
       .then(rows=> {
-        this.logger.info(`Successfully added new comment to: ${postId} post`);
         return rows;
       })
 
@@ -37,7 +36,6 @@ class CommentService {
     return this.postgresqlHelper
       .getForId(params)
       .then(rows => {
-        this.logger.info(`Successfully retrieved all comments for ${postId} blog post`);
         return rows;
       });
   }
@@ -46,16 +44,13 @@ class CommentService {
     const {content} = body;
     const param = {fields:[commentId]};
     return this.postgresqlHelper.getById(param)
-      .then(rows => {
-        this.logger.info(`Retrieved comment row to update`);
-        const comment = rows[0];
+      .then(comment => {
         if(comment) {
           let con = content ? content : comment.content;
           const params = {fields:[commentId, con]};
           return this.postgresqlHelper
             .update(params)
             .then(rowCount => {
-              this.logger.info(`Successfully updated comment with id ${commentId}`);
               return rowCount > 0 ? {status:'success'} : {status:'failure'};
             });
         }
@@ -67,7 +62,6 @@ class CommentService {
     return this.postgresqlHelper
       .deleteById(param)
       .then(rowCount => {
-        this.logger.info(`Successfully deleted comment with id ${commentId}`);
         return rowCount > 0 ? {status:'success'} : {status:'failure'};
       });
   }

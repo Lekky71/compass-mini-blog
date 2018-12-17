@@ -28,7 +28,6 @@ class BlogPostService {
     return this.postgresqlHelper
       .getById(params)
       .then(post => {
-        this.logger.info(`Successfully retrieved blog post`);
         const param = {fields:[postId]};
         return this.commentsPostgresqlHelper
           .getForId(param)
@@ -43,7 +42,6 @@ class BlogPostService {
     return this.postgresqlHelper
       .getAll()
       .then(rows => {
-        this.logger.info(`Successfully retrieved all blog posts`);
         return rows;
       });
   }
@@ -53,7 +51,6 @@ class BlogPostService {
     return this.postgresqlHelper
       .search(params)
       .then(rows => {
-        this.logger.info(`Successfully retrieved all blog posts searched for.`);
         return rows;
       });
   }
@@ -62,9 +59,7 @@ class BlogPostService {
     const {category, title, content} = body;
     const param = {fields:[postId]};
     return this.postgresqlHelper.getById(param)
-      .then(rows => {
-        this.logger.info(`Retrieved row to update is: ${rows[0]}`);
-        const blogPost = rows[0];
+      .then(blogPost => {
         if(blogPost) {
           let catg = category ? category : blogPost.category;
           let titl = title ? title: blogPost.title;
@@ -73,7 +68,6 @@ class BlogPostService {
           return this.postgresqlHelper
             .update(params)
             .then(rowCount => {
-              this.logger.info(`Successfully updated blog post with id ${postId}`);
               return rowCount > 0 ? {status:'success'} : {status:'failure'};
             });
         }
@@ -86,7 +80,6 @@ class BlogPostService {
     return this.postgresqlHelper
       .deleteById(param)
       .then(rowCount => {
-        this.logger.info(`Successfully deleted blog post with id ${postId}`);
         return rowCount > 0 ? {status:'success'} : {status:'failure'};
       });
   }

@@ -61,7 +61,6 @@ class CommentController {
   getAllCommentsForPost(req, res){
     const { postId } = req.params;
     const messages = [];
-    this.logger.error(`Request postId is::${JSON.stringify(req.params)}`);
     if(!postId) {
       messages.push('enter post id param');
     }
