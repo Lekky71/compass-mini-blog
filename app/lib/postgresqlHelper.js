@@ -48,6 +48,14 @@ class PostgresqlHelper {
       });
   }
 
+  getForId(params){
+    return this.pgClient.query(this.getAllQuery, params)
+      .then(results => {
+        return results.rows;
+      });
+  }
+
+
   search(params){
     return this.pgClient.query(this.searchQuery, params.fields)
       .then(results => {

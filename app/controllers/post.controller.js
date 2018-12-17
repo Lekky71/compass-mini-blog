@@ -33,6 +33,7 @@ class PostController {
         }, HttpStatus.OK);
       })
       .catch(error => {
+        this.logger.error(error);
         return Response.failure(res, { message: 'Error occurred during post creation' }, HttpStatus.INTERNAL_SERVER_ERROR);
 
       });
@@ -52,6 +53,7 @@ class PostController {
         }, HttpStatus.OK);
       })
       .catch(error => {
+        this.logger.error(error);
         return Response.failure(res, { message: 'Error occurred during post retrieval' }, HttpStatus.INTERNAL_SERVER_ERROR);
 
       });
@@ -66,6 +68,7 @@ class PostController {
         }, HttpStatus.OK);
       })
       .catch(error => {
+        this.logger.error(error);
         return Response.failure(res, { message: 'Error occurred during posts retrieval' }, HttpStatus.INTERNAL_SERVER_ERROR);
 
       });
@@ -84,6 +87,7 @@ class PostController {
         }, HttpStatus.OK);
       })
       .catch(error => {
+        this.logger.error(error);
         return Response.failure(res, { message: 'Error occurred during posts retrieval' }, HttpStatus.INTERNAL_SERVER_ERROR);
 
       });
@@ -109,6 +113,7 @@ class PostController {
         }, HttpStatus.OK);
       })
       .catch(error => {
+        this.logger.error(error);
         return Response.failure(res, { message: 'Error occurred during blog post update' }, HttpStatus.INTERNAL_SERVER_ERROR);
 
       });
@@ -129,9 +134,10 @@ class PostController {
         }, HttpStatus.OK);
       })
       .catch(error => {
+        this.logger.error(error);
         return Response.failure(res, { message: 'Error occurred during blog post deletion' }, HttpStatus.INTERNAL_SERVER_ERROR);
 
-      });;
+      });
   }
 
 }

@@ -13,6 +13,9 @@ const TriangleService = require('../service/triangle.service');
 const BlogPostController = require('../controllers/post.controller');
 const BlogPostService = require('../service/post.service');
 
+const CommentController = require('../controllers/comment.controller');
+const CommentService = require('../service/comment.service');
+
 const queries = require('../constants/pgQuery');
 
 /**
@@ -84,6 +87,12 @@ serviceLocator.register('BlogPostService', (serviceLocator) => {
   return new BlogPostService(logger, pgClient);
 });
 
+serviceLocator.register('CommentService', (serviceLocator) => {
+  const logger = serviceLocator.get('logger');
+  const pgClient = serviceLocator.get('pgClient');
+  return new CommentService(logger, pgClient);
+});
+
 // CONTROLLER INSTANCES
 
 /**
@@ -99,6 +108,12 @@ serviceLocator.register('blogPostController', (serviceLocator) => {
   const logger = serviceLocator.get('logger');
   const service = serviceLocator.get('BlogPostService');
   return new BlogPostController(logger, service);
+});
+
+serviceLocator.register('commentController', (serviceLocator) => {
+  const logger = serviceLocator.get('logger');
+  const service = serviceLocator.get('CommentService');
+  return new CommentController(logger, service);
 });
 
 module.exports = serviceLocator;

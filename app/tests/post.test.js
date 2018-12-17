@@ -11,6 +11,8 @@ chai.use(chaiAsPromised);
 describe('Blog Post Test Suite', () => {
 
   let postId;
+  let commentId;
+  const commentUrl = '/blog/comment';
 
   it('should create a new blog post', (done) => {
     chai.request(app)
@@ -197,6 +199,205 @@ describe('Blog Post Test Suite', () => {
         done();
       });
   });
+
+
+  /**
+   * Unit tests for comments before post is deleted
+   */
+
+  it('should create a new comment', (done) => {
+    chai.request(app)
+      .post(`${commentUrl}`)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        postId,
+        content:'Keep your core set, posture low and weight on the balls of your feet.Change direction by driving' +
+          ' with your legs and pushing into a full forward sprint toward Cone ',
+        creatorName:'Oluwaleke Fakorede'
+      })
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        }
+        expect(res.body.code)
+          .to
+          .have
+          .equal(200);
+        expect(res.body)
+          .to
+          .have
+          .property('message');
+        expect(res.body)
+          .to
+          .have.property('data');
+        commentId = res.body.data[0]['comment_id'];
+        done();
+      });
+  });
+
+  it('should fail to create a new comment because content and postId not sent', (done) => {
+    chai.request(app)
+      .post(`${commentUrl}`)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        creatorName:'Oluwaleke Fakorede'
+      })
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        }
+        expect(res.body.code)
+          .to
+          .have
+          .equal(400);
+        expect(res.body)
+          .to
+          .have
+          .property('message');
+        expect(res.body.message)
+          .to
+          .have.include('enter postId');
+        expect(res.body.message)
+          .to
+          .have.include('enter content');
+        done();
+      });
+  });
+
+  it('should get a comment by its id', (done) => {
+    chai.request(app)
+      .get(`${commentUrl}/${commentId}`)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        }
+        expect(res.body.code)
+          .to
+          .have
+          .equal(200);
+        expect(res.body)
+          .to
+          .have.property('data');
+        done();
+      });
+  });
+
+  it('should get all comments for a post', (done) => {
+    chai.request(app)
+      .get(`${commentUrl}/post/${postId}`)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        postId
+      })
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        }
+        expect(res.body.code)
+          .to
+          .have
+          .equal(200);
+        expect(res.body)
+          .to
+          .have.property('data');
+        done();
+      });
+  });
+
+  it('should fail to get all comments for a post because postId is not specified', (done) => {
+    chai.request(app)
+      .get(`${commentUrl}/post`)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        postId
+      })
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        }
+        expect(res.body.code)
+          .to
+          .have
+          .equal(400);
+        expect(res.body)
+          .to
+          .have.property('message');
+        done();
+      });
+  });
+
+  it('should update a comment using its id', (done) => {
+    chai.request(app)
+      .put(`${commentUrl}/${commentId}`)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        content: 'Edited comment content'
+      })
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        }
+        expect(res.body.code)
+          .to
+          .have
+          .equal(200);
+        expect(res.body)
+          .to
+          .have.property('data');
+        expect(res.body.data.status)
+          .to
+          .have
+          .equal('success');
+        done();
+      });
+  });
+
+  it('should fail to update comment because body content not sent', (done) => {
+    chai.request(app)
+      .put(`${commentUrl}/${commentId}`)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        }
+        expect(res.body.code)
+          .to
+          .have
+          .equal(400);
+        expect(res.body.message)
+          .to
+          .have.include('enter at least one parameter to update');
+        done();
+      });
+  });
+
+  it('should delete a comment using its id', (done) => {
+    chai.request(app)
+      .del(`${commentUrl}/${commentId}`)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        }
+        expect(res.body.code)
+          .to
+          .have
+          .equal(200);
+        expect(res.body)
+          .to
+          .have.property('data');
+        expect(res.body.data.status)
+          .to
+          .have
+          .equal('success');
+        done();
+      });
+  });
+
+  /**
+   * Test to delete post
+   */
 
   it('should delete a blog post using its id', (done) => {
     chai.request(app)

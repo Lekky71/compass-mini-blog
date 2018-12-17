@@ -1,6 +1,5 @@
 const PostgresqlHelper = require('../lib/postgresqlHelper');
 const uuidv4 = require('uuid/v4');
-const config = require('../config/settings');
 class BlogPostService {
   constructor(logger, pgClient) {
     this.logger = logger;
@@ -10,6 +9,7 @@ class BlogPostService {
   }
 
   addNewBlogPost(postBody){
+    // noinspection JSUnresolvedFunction
     const postId = uuidv4().toString();
     const {category, title, content, creatorName} = postBody;
     const params = {fields:[postId, category, title, content, creatorName, 0, new Date()]};
